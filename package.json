@@ -23,8 +23,11 @@
     "postinstall": "npm run lint:fix"
   },
   "dependencies": {
-    "vue": "^2.5.16",
     "axios": "^0.18.0",
+    "electron-json-storage": "^4.1.5",
+    "iview": "^3.1.5",
+    "nedb": "^1.8.0",
+    "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",

@@ -1,43 +1,64 @@
 <template>
   <div id="wrapper">
-    <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
-    <main>
-      <div class="left-side">
-        <span class="title">
-          Welcome to your new project!
-        </span>
-        <system-information></system-information>
-      </div>
-
-      <div class="right-side">
-        <div class="doc">
-          <div class="title">Getting Started</div>
-          <p>
-            electron-vue comes packed with detailed documentation that covers everything from
-            internal configurations, using the project structure, building your application,
-            and so much more.
-          </p>
-          <button @click="open('https://simulatedgreg.gitbooks.io/electron-vue/content/')">Read the Docs</button><br><br>
+    <Row>
+      <Col span="18"><h1>2018年12月06日</h1></Col>
+      <Col span="6">
+        <Button type="default" style='float:right' shape="circle" size='large' @click="displayAddBox" icon="md-add">
+        </Button>
+      </Col>
+    </Row>
+    <Row style='margin-top: 40px' v-if="add_box_display">
+      <Input search enter-button="Add" v-model="message" placeholder="Enter something..." @on-search="addTask" />
+    </Row>
+    <Row style='margin-top: 40px'>
+    <Col span='24' v-for="item in tasks" style=" margin-top: 20px">
+        <div style='float:left;'>
+          <span style="font-size: 18px">{{item.message}}</span>
         </div>
-        <div class="doc">
-          <div class="title alt">Other Documentation</div>
-          <button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
-          <button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
+        <div style="float: right">
+          <Button type="warning" icon="ios-play" shape="circle" v-if="false"></Button>
+          <Button type="info" icon="ios-play" shape="circle"></Button>
+          <Button type="warning" shape="circle" icon="md-close"></Button>
         </div>
-      </div>
-    </main>
+    </Col>
+    </Row>
   </div>
+  
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation'
-
   export default {
-    name: 'landing-page',
-    components: { SystemInformation },
+    data () {
+      return {
+        add_box_display: false,
+        message: '',
+        tasks: [
+          {
+            message: 'This is a Hello World'
+          },
+          {
+            message: 'This is a Hello World'
+          }
+        ]
+      }
+    },
     methods: {
-      open (link) {
-        this.$electron.shell.openExternal(link)
+      displayAddBox: function () {
+        this.add_box_display = this.add_box_display ^ true
+      },
+      addTask: function () {
+        this.tasks.push({ message: this.message })
+        this.message = ''
+        this.add_box_display = false
+
+        this.$db.loadDatabase()
+        let doc = {
+          id: 1,
+          name: 'perillaroc'
+        }
+        this.$db.insert(doc, function (err, newDoc) {
+          console.log(err, newDoc)
+        })
       }
     }
   }
@@ -62,14 +83,8 @@
         rgba(229, 229, 229, .9) 100%
       );
     height: 100vh;
-    padding: 60px 80px;
+    padding: 30px 40px;
     width: 100vw;
-  }
-
-  #logo {
-    height: auto;
-    margin-bottom: 20px;
-    width: 420px;
   }
 
   main {
@@ -79,50 +94,4 @@
 
   main > div { flex-basis: 50%; }
 
-  .left-side {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .welcome {
-    color: #555;
-    font-size: 23px;
-    margin-bottom: 10px;
-  }
-
-  .title {
-    color: #2c3e50;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 6px;
-  }
-
-  .title.alt {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  .doc p {
-    color: black;
-    margin-bottom: 10px;
-  }
-
-  .doc button {
-    font-size: .8em;
-    cursor: pointer;
-    outline: none;
-    padding: 0.75em 2em;
-    border-radius: 2em;
-    display: inline-block;
-    color: #fff;
-    background-color: #4fc08d;
-    transition: all 0.15s ease;
-    box-sizing: border-box;
-    border: 1px solid #4fc08d;
-  }
-
-  .doc button.alt {
-    color: #42b983;
-    background-color: transparent;
-  }
 </style>
