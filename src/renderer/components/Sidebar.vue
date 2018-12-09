@@ -11,7 +11,7 @@
         <Input search enter-button="Add" v-model="message" placeholder="Enter something..." @on-search="addTask" />
     </Row>
     <Row style='margin-top: 40px'>
-        <Col span='24' v-for="item in tasks" style="margin-top: 20px" :key="item.message">
+        <Col span='24' v-for="item in Task.tasks" style="margin-top: 20px" :key="item._id">
             <div style='float:left;'>
             <span style="font-size: 18px">{{item.message}}</span>
             </div>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
@@ -37,16 +38,19 @@
         vue: require('vue/package.json').version,
 
         add_box_display: false,
-        message: '',
-        tasks: [
-          {
-            message: 'This is a Hello World'
-          },
-          {
-            message: 'This is a Hello World'
-          }
-        ]
+        message: ''
       }
+    },
+    computed: {
+      ...mapState(['Task']),
+
+      tasks: function () {
+        // `this` points to the vm instance
+        return this.Task.tasks
+      }
+    },
+    mounted: function () {
+      this.$store.dispatch('Task/loadTasks')
     },
     methods: {
       displayAddBox: function () {

@@ -27,6 +27,9 @@ function createWindow () {
 
   mainWindow.loadURL(winURL)
 
+  if (process.env.NODE_ENV === 'development') {
+  }
+
   mainWindow.on('closed', () => {
     mainWindow = null
   })
