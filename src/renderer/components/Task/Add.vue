@@ -26,17 +26,17 @@ export default {
     return {
       task: {
         message: '',
-        duration: 0
+        duration: 0,
+        _create: 0
       }
     }
   },
 
   methods: {
     addTask: function () {
-      this.$db.loadDatabase()
-      this.$db.insert(this.task, function (err, newDoc) {
-        console.log(err, newDoc)
-      })
+      var timestamp = (new Date()).valueOf()
+      this.task._create = timestamp
+      this.$store.dispatch('Task/addTask', this.task)
     }
   }
 }
