@@ -3,7 +3,7 @@
     <Row>
         <Col span="18"><h1>2018年12月06日</h1></Col>
         <Col span="6">
-        <Button type="default" style='float:right' shape="circle" size='large' @click="displayAddBox" icon="md-add">
+        <Button type="default" style='float:right' shape="circle" size='large' @click="displayAddPage" icon="md-add">
         </Button>
         </Col>
     </Row>
@@ -13,8 +13,7 @@
             <span style="font-size: 18px">{{item.message}}{{item._create | formatDate}}</span>
             </div>
             <div style="float: right">
-            <Button type="warning" icon="ios-play" shape="circle" v-if="false"></Button>
-            <Button type="info" icon="ios-play" shape="circle"></Button>
+            <Button type="info" icon="ios-play" shape="circle" @click="displayProgressPage(item)"></Button>
             <Button type="warning" shape="circle" icon="md-close" @click="removeTask(item._id)"></Button>
             </div>
         </Col>
@@ -47,9 +46,15 @@
       this.$store.dispatch('Task/loadTasks')
     },
     methods: {
-      displayAddBox: function () {
+      displayAddPage: function () {
         this.$router.push({
-          path: `/task/add`
+          path: '/task/add'
+        })
+      },
+      displayProgressPage: function (task) {
+        this.$store.dispatch('Task/setupTask', task)
+        this.$router.push({
+          path: '/task/progress'
         })
       },
       removeTask: function (taskId) {

@@ -17,6 +17,10 @@ export default new Router({
         {
           path: '/task/add',
           component: require('@/components/Task/Add').default
+        },
+        {
+          path: '/task/progress',
+          component: require('@/components/Task/Progress').default
         }
       ]
     },
