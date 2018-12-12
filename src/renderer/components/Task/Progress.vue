@@ -6,9 +6,9 @@
     </i-circle>
     <div>
         <h3>{{task.message}}</h3>
-        <h3>{{task.duration}}</h3>
-        <button @click="startCountDown">Play</button>
-        <button @click="stopCountDown">Stop</button>
+        <h3>{{task.consume}}</h3>
+        <Button type="primary" @click="startCountDown">Play</Button>
+        <Button type="warning" @click="stopCountDown">Stop</Button>
     </div>
   </div>
 </template>
@@ -18,13 +18,15 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      percent: 0,
       count_down_timer: null
     }
   },
   computed: {
     ...mapState(['Task']),
 
+    percent () {
+      return this.Task.currentTask.consume * 100 / this.Task.currentTask.duration
+    },
     color () {
       let color = '#2db7f5'
       if (this.percent === 100) {

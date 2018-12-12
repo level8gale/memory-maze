@@ -36,6 +36,7 @@ export default {
     addTask: function () {
       var timestamp = (new Date()).valueOf()
       this.task._create = timestamp
+      this.task.consume = 0
       this.$store.dispatch('Task/addTask', this.task)
     }
   }

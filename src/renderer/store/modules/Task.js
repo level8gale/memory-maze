@@ -13,7 +13,7 @@ const mutations = {
     state.currentTask = task
   },
   COUNT_DOWN_TASK (state) {
-    state.currentTask.duration -= 0.01
+    state.currentTask.consume += 1
   }
 }
 
@@ -43,8 +43,12 @@ const actions = {
   setupTask ({ commit }, task) {
     commit('SETUP_TASK', task)
   },
-  countDownCurrentTask ({ commit }) {
+  countDownCurrentTask ({ commit, dispatch, state }) {
     commit('COUNT_DOWN_TASK')
+    db.loadDatabase()
+    db.update({ _id: state.currentTask._id }, { $set: { consume: state.currentTask.consume } }, { upsert: true }, function () {
+      dispatch('loadTasks')
+    })
   }
 }
 
