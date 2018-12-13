@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sidebar" style=" overflow-y: auto;height: 100%;">
     <Row>
         <Col span="18"><h1>2018年12月06日</h1></Col>
         <Col span="6">
@@ -7,16 +7,17 @@
         </Button>
         </Col>
     </Row>
-    <Row style='margin-top: 40px'>
-        <Col span='24' v-for="item in Task.tasks" style="margin-top: 20px" :key="item._id">
-            <div style='float:left;'>
-            <span style="font-size: 18px">{{item.message}}{{item._create | formatDate}}</span>
-            </div>
-            <div style="float: right">
-            <Button type="info" icon="ios-play" shape="circle" @click="displayProgressPage(item)"></Button>
-            <Button type="warning" shape="circle" icon="md-close" @click="removeTask(item._id)"></Button>
-            </div>
-        </Col>
+    <Row style='margin-top: 40px;'>
+      <Col span='24' class="task-card" v-bind:class="{ active: isCurrentTask(item._id) }" v-for="item in Task.tasks" :key="item._id" v-on:dblclick.native="displayProgressPage(item)">
+        <div style='float:left;'>
+          <div><span style="font-size: 18px">{{item.message}}</span></div>
+          <div><span style="font-size: 10px">{{item._create | formatDate}}</span></div>
+        </div>
+        <div style="float: right;display: table-cell;vertical-align: middle;">
+        <Button type="info" icon="ios-play" shape="circle" @click="displayProgressPage(item)"></Button>
+        <Button type="warning" shape="circle" icon="md-close" @click="removeTask(item._id)"></Button>
+        </div>
+      </Col>
     </Row>
   </div>
 </template>
@@ -46,6 +47,9 @@
       this.$store.dispatch('Task/loadTasks')
     },
     methods: {
+      isCurrentTask: function (taskId) {
+        return this.Task.currentTask._id === taskId
+      },
       displayAddPage: function () {
         this.$router.push({
           path: '/task/add'
@@ -82,5 +86,40 @@
 </script>
 
 <style scoped>
+::-webkit-scrollbar  
+{  
+    width: 6px;  
+    height: 6px;  
+    background-color: #F5F5F5;  
+}  
+  
+::-webkit-scrollbar-track  
+{  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  
+    border-radius: 10px;  
+    background-color: #FFF;  
+}  
+  
+::-webkit-scrollbar-thumb  
+{  
+    border-radius: 10px;  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
+    background-color: #AAA;  
+}  
 
+.active{
+  background-color: aquamarine;
+  border-left: 3px solid brown;
+}
+.task-card:hover{
+  background-color: antiquewhite;
+}
+.task-card{
+  margin-top: 2px;
+  padding: 8px;
+}
+.sidebar{
+  padding: 10px 10px;
+  height: 100%;
+}
 </style>

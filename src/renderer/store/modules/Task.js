@@ -7,13 +7,16 @@ const state = {
 
 const mutations = {
   LOAD_TASKS (state, tasks) {
+    tasks.duration = tasks.duration * 60
     state.tasks = tasks
   },
   SETUP_TASK (state, task) {
     state.currentTask = task
   },
   COUNT_DOWN_TASK (state) {
-    state.currentTask.consume += 1
+    if (state.currentTask.consume < state.currentTask.duration) {
+      state.currentTask.consume += 1
+    }
   }
 }
 

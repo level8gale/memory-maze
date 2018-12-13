@@ -1,15 +1,14 @@
 <template>
   <div id="wrapper">
-    <Row>
-      <Col :xs="24" :sm="6">
+    <Row style="height: 100%">
+      <Col :xs="24" :sm="8" style="height: 100%">
         <Sidebar></Sidebar>
       </Col>
-      <Col :xs="0" :sm="18">
-      <router-view></router-view>
+      <Col :xs="0" :sm="16">
+      <router-view style="padding: 10px"></router-view>
       </Col>
     </Row>
   </div>
-  
 </template>
 
 <script>
