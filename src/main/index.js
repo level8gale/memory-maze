@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, Menu, Tray, BrowserWindow } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -11,6 +11,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow
+let tray = null
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -27,8 +28,37 @@ function createWindow () {
 
   mainWindow.loadURL(winURL)
 
-  mainWindow.on('closed', () => {
-    mainWindow = null
+  if (process.env.NODE_ENV === 'development') {
+  }
+
+  // mainWindow.on('closed', () => {
+  //   mainWindow = null
+  // })
+
+  mainWindow.on('close', (event) => {
+    mainWindow.hide()
+    mainWindow.setSkipTaskbar(true)
+    event.preventDefault()
+  })
+
+  mainWindow.on('show', () => {
+    tray.setHighlightMode('always')
+  })
+
+  mainWindow.on('hide', () => {
+    tray.setHighlightMode('never')
+  })
+
+  const menubarPic = process.platform === 'darwin' ? `${__static}/menubar.png` : `${__static}/menubar-nodarwin.png`
+  tray = new Tray(menubarPic)
+  const contextMenu = Menu.buildFromTemplate([
+    {label: '退出', click: () => { mainWindow.destroy() }}
+  ])
+  tray.setToolTip('Tray')
+  tray.setContextMenu(contextMenu)
+  tray.on('click', () => {
+    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+    mainWindow.isVisible() ? mainWindow.setSkipTaskbar(false) : mainWindow.setSkipTaskbar(true)
   })
 }
 
