@@ -5,14 +5,14 @@
         <FormItem label="Message">
           <h3>{{task.message}}</h3>
         </FormItem>
-        <FormItem label="Consume">
-          <h3>{{task.consume}}</h3>
+        <FormItem label="State">
+          <h3>{{task.state | formatState}}</h3>
         </FormItem>
         <FormItem label="Create Time">
           <h3>{{task._create | formatDate}}</h3>
         </FormItem>
-        <FormItem label="Duration">
-          <h3>{{task.duration}}</h3>
+        <FormItem label="progress">
+          <h3>{{task.consume}} / {{task.duration}}</h3>
         </FormItem>
       </Form>
     </div>
@@ -86,6 +86,16 @@ export default {
       let s = date.getSeconds()
       s = s < 10 ? ('0' + s) : s
       return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s
+    },
+    formatState: function (value) {
+      switch (value) {
+        case 0:
+          return '待开始'
+        case 1:
+          return '进行中'
+        case 2:
+          return '已完成'
+      }
     }
   }
 }

@@ -7,8 +7,23 @@ const state = {
 
 const mutations = {
   LOAD_TASKS (state, tasks) {
-    tasks.duration = tasks.duration * 60
-    state.tasks = tasks
+    tasks.duration = tasks.duration
+
+    var newTasks = []
+    for (var taskIdx in tasks) {
+      if (tasks[taskIdx] === undefined) {
+        continue
+      }
+      var defaultTask = {
+        message: '',
+        state: 0,
+        duration: 10,
+        consume: 0,
+        _create: (new Date()).valueOf()
+      }
+      newTasks.push(Object.assign(defaultTask, tasks[taskIdx]))
+    }
+    state.tasks = newTasks
   },
   SETUP_TASK (state, task) {
     state.currentTask = task
@@ -49,7 +64,8 @@ const actions = {
   countDownCurrentTask ({ commit, dispatch, state }) {
     commit('COUNT_DOWN_TASK')
     db.loadDatabase()
-    db.update({ _id: state.currentTask._id }, { $set: { consume: state.currentTask.consume } }, { upsert: true }, function () {
+    state.currentTask.state = state.currentTask.consume === state.currentTask.duration ? 2 : 1
+    db.update({ _id: state.currentTask._id }, { $set: { consume: state.currentTask.consume, state: state.currentTask.state } }, { upsert: true }, function () {
       dispatch('loadTasks')
     })
   }

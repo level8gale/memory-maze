@@ -48,7 +48,7 @@
     },
     methods: {
       isCurrentTask: function (taskId) {
-        return this.Task.currentTask._id === taskId
+        return this.Task.currentTask !== null && this.Task.currentTask._id === taskId
       },
       displayAddPage: function () {
         this.$router.push({

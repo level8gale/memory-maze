@@ -26,6 +26,7 @@ export default {
     return {
       task: {
         message: '',
+        state: 0,
         duration: 0,
         _create: 0,
         consume: 0
