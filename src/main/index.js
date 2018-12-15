@@ -60,6 +60,11 @@ function createWindow () {
     mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
     mainWindow.isVisible() ? mainWindow.setSkipTaskbar(false) : mainWindow.setSkipTaskbar(true)
   })
+
+  if (process.platform === 'win32') {
+    // app.setAppUserModelId("com.desktop-notifications");
+    app.setAppUserModelId(process.execPath)
+  }
 }
 
 app.on('ready', createWindow)

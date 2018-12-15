@@ -11,7 +11,7 @@ export default new Router({
       component: require('@/components/LandingPage').default,
       children: [
         {
-          path: '/index',
+          path: '/',
           component: require('@/components/MainPage/Index').default
         },
         {

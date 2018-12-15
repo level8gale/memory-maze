@@ -59,6 +59,9 @@ export default {
   methods: {
     startCountDown: function () {
       var _this = this
+      if (this.count_down_timer !== null) {
+        return
+      }
       this.count_down_timer = window.setInterval(function () {
         if (_this.task.consume >= _this.task.duration) {
           _this.stopCountDown()

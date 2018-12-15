@@ -3,12 +3,12 @@
     <Row>
         <Col span="18"><h1>2018年12月06日</h1></Col>
         <Col span="6">
-        <Button type="default" style='float:right' shape="circle" size='large' @click="displayAddPage" icon="md-add">
-        </Button>
+        <Button type="default" style='float:right; margin-left: 1px' shape="circle" size='large' @click="displayAddPage" icon="md-add"></Button>
+        <Button type="default" style='float:right; margin-left: 1px' shape="circle" size='large' @click="displayHomePage" icon="md-home"></Button>
         </Col>
     </Row>
     <Row style='margin-top: 40px;'>
-      <Col span='24' class="task-card" v-bind:class="{ active: isCurrentTask(item._id) }" v-for="item in Task.tasks" :key="item._id" v-on:dblclick.native="displayProgressPage(item)">
+      <Col span='24' class="task-card" v-bind:class="{ active: isCurrentTask(item._id) }" v-for="item in Task.tasks" :key="item._id" v-if="item.state != 2" v-on:dblclick.native="displayProgressPage(item)">
         <div style='float:left;'>
           <div><span style="font-size: 18px">{{item.message}}</span></div>
           <div><span style="font-size: 10px">{{item._create | formatDate}}</span></div>
@@ -53,6 +53,11 @@
       displayAddPage: function () {
         this.$router.push({
           path: '/task/add'
+        })
+      },
+      displayHomePage: function () {
+        this.$router.push({
+          path: '/'
         })
       },
       displayProgressPage: function (task) {

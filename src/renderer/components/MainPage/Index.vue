@@ -1,10 +1,23 @@
 <template>
   <div>
-    <div class="title">Information</div>
+    <Row :gutter="16">
+      <Col span="6">
+        <Card>
+            <div style="text-align:center">
+                <h1>{{taskCount}}</h1>
+                <h3>Total Task Count</h3>
+            </div>
+        </Card>
+      </Col>
+      <Col span="18">
+        <Table :columns="task_columns" :data="tasks" @on-row-dblclick="displayProgressPage"></Table>
+      </Col>
+    </Row>
   </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
@@ -13,7 +26,46 @@
         node: process.versions.node,
         path: this.$route.path,
         platform: require('os').platform(),
-        vue: require('vue/package.json').version
+        vue: require('vue/package.json').version,
+        task_columns: [
+          {
+            type: 'index',
+            align: 'center'
+          },
+          {
+            title: 'Create',
+            key: '_create'
+          },
+          {
+            title: 'State',
+            key: 'state'
+          },
+          {
+            title: 'Message',
+            key: 'message'
+          }
+        ]
+      }
+    },
+    computed: {
+      ...mapState(['Task']),
+
+      tasks: function () {
+        // `this` points to the vm instance
+        return this.Task.tasks
+      },
+
+      taskCount: function () {
+        // `this` points to the vm instance
+        return this.Task.tasks.length
+      }
+    },
+    methods: {
+      displayProgressPage: function (task) {
+        this.$store.dispatch('Task/setupTask', task)
+        this.$router.push({
+          path: '/task/progress'
+        })
       }
     }
   }

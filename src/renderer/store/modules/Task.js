@@ -64,8 +64,17 @@ const actions = {
   countDownCurrentTask ({ commit, dispatch, state }) {
     commit('COUNT_DOWN_TASK')
     db.loadDatabase()
-    state.currentTask.state = state.currentTask.consume === state.currentTask.duration ? 2 : 1
-    db.update({ _id: state.currentTask._id }, { $set: { consume: state.currentTask.consume, state: state.currentTask.state } }, { upsert: true }, function () {
+    var currentTaskState = state.currentTask.consume === state.currentTask.duration ? 2 : 1
+    if (currentTaskState === 2) {
+      console.log('are you ok??')
+      let myNotification = new Notification('标题', {
+        body: '通知正文内容'
+      })
+      myNotification.onclick = () => {
+        console.log('通知被点击')
+      }
+    }
+    db.update({ _id: state.currentTask._id }, { $set: { consume: state.currentTask.consume, state: currentTaskState } }, { upsert: true }, function () {
       dispatch('loadTasks')
     })
   }
